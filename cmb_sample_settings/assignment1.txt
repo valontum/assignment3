@@ -91,7 +91,7 @@ Group.speed = 0.5, 1.5
 # Message TTL of 300 minutes (5 hours)
 # Group.msgTtl = 300
 
-## Group 1 Students
+## Group 1 Students d
 Group1.groupID = S
 Group1.nrofHosts = 10
 Group.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23
