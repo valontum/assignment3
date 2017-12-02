@@ -4,7 +4,7 @@ Scenario.name = MapRouteMovement
 Scenario.endTime = 6000
 Scenario.updateInterval = 0.1
 Scenario.simulateConnections = false
-MovementModel.worldSize = 450,450
+MovementModel.worldSize = 600,600
 Events.nrof = 0
 
 # Communication Interface
@@ -13,7 +13,10 @@ myInterface.transmitRange = 0
 myInterface.transmitSpeed = 0
 
 # Groups
-Scenario.nrofHostGroups = 3
+Scenario.nrofHostGroups = 1
+
+# Groups
+Scenario.nrofHostGroups = 1
 # Common settings for all groups
 Group.movementModel = ShortestPathMapBasedMovement
 Group.router = EpidemicRouter
@@ -22,43 +25,14 @@ Group.waitTime = 0, 120
 # All nodes have the bluetooth interface
 # Walking speeds
 Group.speed = 0.5, 1.5
+# Message TTL of 300 minutes (5 hours)
 Group.nrofInterfaces = 1
 Group.interface1 = myInterface
-Group1.groupID = FM
+
+Group.msgTtl = 300
+Group1.groupID = x
 Group1.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
 Group1.nrofHosts = 10
-Group1.waitTime = 0, 120
-
-# Groups
-# Common settings for all groups
-Group2.movementModel = [MapRouteMovement; RandomDirection; ModifiedRandomDirection]
-Group.routeFile = data/cluster/HS1.wkt
-Group.routeType = 1
-Group2.router = EpidemicRouter
-Group2.bufferSize = 5M
-Group2.waitTime = 0, 120
-# All nodes have the bluetooth interface
-# Walking speeds
-Group2.speed = 0.5, 1.5
-Group2.nrofInterfaces = 1
-Group2.interface1 = myInterface
-Group2.groupID = S
-Group2.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
-Group2.nrofHosts = 10
-# Groups
-                     # Common settings for all groups
-                     Group3.movementModel = TimeVariantRwp
-                     Group3.router = EpidemicRouter
-                     Group3.bufferSize = 5M
-                     Group3.waitTime = 0, 120
-                     # All nodes have the bluetooth interface
-                     # Walking speeds
-                     Group3.speed = 0.5, 1.5
-                     Group3.nrofInterfaces = 1
-                     Group3.interface1 = myInterface
-                     Group3.groupID = Z
-                     Group3.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13
-                     Group3.nrofHosts = 10
 
 
 ## Map based movement -movement model specific settings
@@ -76,13 +50,10 @@ MapBasedMovement.mapFile10 = data/cluster/Sektion5.wkt
 MapBasedMovement.mapFile11 = data/cluster/Sektion4.wkt
 MapBasedMovement.mapFile12 = data/cluster/HS1.wkt
 MapBasedMovement.mapFile13 = data/cluster/Bibliothek.wkt
-MapBasedMovement.mapFile14 = data/cluster/Umlauf.wkt
+MapBasedMovement.mapFile14 = data/cluster/ZugangKiesparkplatz.wkt
 MapBasedMovement.mapFile15 = data/cluster/ZugangParkplatz.wkt
-MapBasedMovement.mapFile16 = data/cluster/ZugangKiesparkplatz.wkt
-MapBasedMovement.mapFile17 = data/cluster/ZugangUBahn.wkt
-
-
-
+MapBasedMovement.mapFile16 = data/cluster/ZugangUBahn.wkt
+MapBasedMovement.mapFile17 = data/cluster/Umlauf.wkt
 
 
 # Reports
