@@ -69,10 +69,11 @@ Events.nrof = 0
 
 ##########################
 ### Network Interfaces ###
+Scenario.simulateConnections = true
 
 myInterface.type = SimpleBroadcastInterface
-myInterface.transmitRange = 0
-myInterface.transmitSpeed = 0
+myInterface.transmitRange = 50
+myInterface.transmitSpeed = 1
 
 ##############
 ### Groups ###
@@ -248,11 +249,13 @@ Group14.activeTimes = 0, 21600, 28800, 57600
 ## Reports ##
 
 # How many reports to load
-Report.nrofReports = 1
+Report.nrofReports = 3
 # Directory where reports would be created
 Report.reportDir = reports/Assignment-1
 # Report classes to load
 Report.report1 = InterContactTimesReport
+Report.report2 = ContactTimesReport
+Report.report3 = InterGroupContactsReport
 
 ##################
 ## GUI settings ##
