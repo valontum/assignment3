@@ -11,7 +11,6 @@ Scenario.updateInterval = 0.1
 # University day: 6am to 21pm ~= 57600
 Scenario.endTime = 57600
 
-Scenario.simulateConnections = false
 Scenario.nrofHostGroups = 14
 
 ###############################
