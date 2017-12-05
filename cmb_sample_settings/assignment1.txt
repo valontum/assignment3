@@ -249,20 +249,17 @@ Group14.activeTimes = 0, 21600, 28800, 57600
 ## Reports ##
 
 # How many reports to load
-Report.nrofReports = 3
+Report.nrofReports = 1
 # Directory where reports would be created
 Report.reportDir = reports/Assignment-1
 # Report classes to load
-Report.report1 = InterContactTimesReport
-Report.report2 = ContactTimesReport
-Report.report3 = InterGroupContactsReport
+Report.report1 = InterGroupContactsReport
 
 ##################
 ## GUI settings ##
 
 # GUI underlay image settings
 GUI.UnderlayImage.fileName = data/mi/MI_Map.jpg
-#GUI.UnderlayImage.fileName = data/helsinki_underlay.png
 # Image offset in pixels (x, y)
 GUI.UnderlayImage.offset = 0, 0
 # Scaling factor for the image
