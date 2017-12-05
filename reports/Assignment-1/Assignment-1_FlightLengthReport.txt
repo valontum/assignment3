@@ -1,2 +1,0 @@
-Mean: NaN
-Variance: NaN
