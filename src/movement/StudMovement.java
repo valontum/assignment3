@@ -1,4 +1,7 @@
-
+/*
+ * Copyright 2017 Technical University Munic
+ * Released under GPLv3. See LICENSE.txt for details.
+ */
 package movement;
 
 import input.WKTReader;
@@ -15,36 +18,37 @@ import core.Settings;
 import core.SimClock;
 
 
-public class StaffMovement extends MapBasedMovement implements
+
+public class StudMovement extends MapBasedMovement implements
         SwitchableMovement {
 
     private static final int WALKING_TO_DEST_MODE = 0;
-    private static final int AT_OFFICE_MODE = 1;
+    private static final int AT_LECTURE_MODE = 1;
     private static final int AT_LUNCH_MODE = 2;
     private static final int AT_HOME_MODE = 3;
 
     public static final String CAFETERIA_POINT_SETTING = "cafeteriaPoint";
-    public static final String WORK_DAY_LENGTH_SETTING = "workDayLength";
-    public static final String NR_OF_OFFICES_SETTING = "nrOfOffices";
+    public static final String NR_OF_ROOMS_SETTING = "nrOfRooms";
     public static final String NR_OF_STARTS_SETTING = "nrOfStarts";
     public static final String LUNCH_TIME_SETTING = "lunchTime";
 
-    public static final String OFFICE_LOCATIONS_FILE_SETTING =
-            "officeLocationsFile";
+    public static final String ROOM_LOCATIONS_FILE_SETTING =
+            "roomLocationsFile";
     public static final String START_LOCATIONS_FILE_SETTING =
             "startLocationsFile";
 
-    
+
+   
+    private static int lectureLength = 7200;
     private static int lunchBreakLength = 3600;
 
-    private static int nrOfOffices = 50;
+    private int currentRoomNr;
 
     private int mode;
-    private int nextmode;
 
     private int nrOfStarts;
-    private int workDayLength;
-    private int startedWorkingTime;
+    private int nrOfRooms;
+    private int startedLectureTime;
     private int lunchTime;
     private int startedLunchTime;
     private boolean hadLunch = false;
@@ -52,35 +56,29 @@ public class StaffMovement extends MapBasedMovement implements
     private DijkstraPathFinder pathFinder;
 
     private List<Coord> allStarts;
-    private List<Coord> allOffices;
+    private List<Coord> allRooms;
 
-    private Coord lastWaypoint;
-    private Coord nextLocation;
-    private Coord officeLocation;
     private Coord startPoint;
     private Coord cafePoint;
+    private Coord lastWaypoint;
 
-    /**
-     * StaffMovement constructor
-     * @param settings
-     */
-    public StaffMovement(Settings settings) {
+   
+    public StudMovement(Settings settings) {
         super(settings);
 
         int [] cafeteriaPoint = settings.getCsvInts(CAFETERIA_POINT_SETTING,2);
         Coord c = new Coord(cafeteriaPoint[0], cafeteriaPoint[1]);
         cafePoint = c;
 
-        workDayLength = settings.getInt(WORK_DAY_LENGTH_SETTING);
-        nrOfOffices = settings.getInt(NR_OF_OFFICES_SETTING);
         nrOfStarts = settings.getInt(NR_OF_STARTS_SETTING);
+        nrOfRooms = settings.getInt(NR_OF_ROOMS_SETTING);
         lunchTime = settings.getInt(LUNCH_TIME_SETTING);
 
-        startedWorkingTime = -1;
+        currentRoomNr = 0;
+        startedLectureTime = -1;
         startedLunchTime = -1;
         pathFinder = new DijkstraPathFinder(null);
         mode = WALKING_TO_DEST_MODE;
-        nextmode = AT_OFFICE_MODE;
 
         String startLocationsFile = null;
         try {
@@ -118,25 +116,22 @@ public class StaffMovement extends MapBasedMovement implements
             }
         }
 
-        String officeLocationsFile = null;
+        String roomLocationsFile = null;
         try {
-            officeLocationsFile = settings.getSetting(
-                    OFFICE_LOCATIONS_FILE_SETTING);
+            roomLocationsFile = settings.getSetting(
+                    ROOM_LOCATIONS_FILE_SETTING);
         } catch (Throwable t) {
             // Do nothing;
         }
 
-        if (officeLocationsFile == null) {
+        if (roomLocationsFile == null) {
             MapNode[] mapNodes = (MapNode[])getMap().getNodes().
                     toArray(new MapNode[0]);
-            int officeIndex = rng.nextInt(mapNodes.length - 1) /
-                    (mapNodes.length/nrOfOffices);
-            officeLocation = mapNodes[officeIndex].getLocation().clone();
         } else {
             try {
-                allOffices = new LinkedList<Coord>();
+                allRooms = new LinkedList<Coord>();
                 List<Coord> locationsRead = (new WKTReader()).
-                        readPoints(new File(officeLocationsFile));
+                        readPoints(new File(roomLocationsFile));
                 for (Coord coord : locationsRead) {
                     SimMap map = getMap();
                     Coord offset = map.getOffset();
@@ -145,34 +140,29 @@ public class StaffMovement extends MapBasedMovement implements
                         coord.setLocation(coord.getX(), -coord.getY());
                     }
                     coord.translate(offset.getX(), offset.getY());
-                    allOffices.add(coord);
+                    allRooms.add(coord);
                 }
-                officeLocation = allOffices.get(
-                        rng.nextInt(allOffices.size())).clone();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-        nextLocation = officeLocation;
     }
 
     /**
      * Copyconstructor
      * @param proto
      */
-    public StaffMovement(StaffMovement proto) {
+    public StudMovement(StudMovement proto) {
         super(proto);
         this.nrOfStarts = proto.nrOfStarts;
         this.startPoint = proto.startPoint;
         this.cafePoint = proto.cafePoint;
+        this.currentRoomNr = proto.currentRoomNr;
         this.lunchTime = proto.lunchTime;
-        this.workDayLength = proto.workDayLength;
-        startedWorkingTime = -1;
+        startedLectureTime = -1;
         startedLunchTime = -1;
         this.pathFinder = proto.pathFinder;
         this.mode = proto.mode;
-        this.nextmode = proto.nextmode;
 
         if (proto.allStarts == null) {
             MapNode[] mapNodes = (MapNode[])getMap().getNodes().
@@ -186,19 +176,12 @@ public class StaffMovement extends MapBasedMovement implements
                     rng.nextInt(allStarts.size())).clone();
         }
 
-        if (proto.allOffices == null) {
+        if (proto.allRooms == null) {
             MapNode[] mapNodes = (MapNode[])getMap().getNodes().
                     toArray(new MapNode[0]);
-            int officeIndex = rng.nextInt(mapNodes.length - 1) /
-                    (mapNodes.length/nrOfOffices);
-            officeLocation = mapNodes[officeIndex].getLocation().clone();
         } else {
-            this.allOffices = proto.allOffices;
-            officeLocation = allOffices.get(
-                    rng.nextInt(allOffices.size())).clone();
+            this.allRooms = proto.allRooms;
         }
-
-        this.nextLocation = proto.officeLocation;
     }
 
     @Override
@@ -209,75 +192,76 @@ public class StaffMovement extends MapBasedMovement implements
 
     @Override
     public Path getPath() {
-        Path path = new Path(1);
-        switch (mode) {
-            case WALKING_TO_DEST_MODE:
-                // Try to find to the next location
-                SimMap map = super.getMap();
-                if ( map == null ) {
-                    return null;
+        if (mode == WALKING_TO_DEST_MODE) {
+            // Try to find to the next destination
+            SimMap map = super.getMap();
+            if (map == null) {
+                return null;
+            }
+            MapNode thisNode = map.getNodeByCoord(lastWaypoint);
+            MapNode destinationNode;
+            if (currentRoomNr < 3) {
+                // Check if it is already time for lunch
+                if (this.hadLunch == false && SimClock.getIntTime() >= this.lunchTime) {
+                    destinationNode = map.getNodeByCoord(cafePoint);
+                    mode = AT_LUNCH_MODE;
+                } else {
+                    // Get next random room from Room File
+                    destinationNode = map.getNodeByCoord(allRooms.get(
+                            rng.nextInt(allRooms.size())).clone());
+                    currentRoomNr++;
+                    mode = AT_LECTURE_MODE;
                 }
-                MapNode thisNode = map.getNodeByCoord(lastWaypoint);
-                MapNode destinationNode = map.getNodeByCoord(nextLocation);
-                List<MapNode> nodes = pathFinder.getShortestPath(thisNode,
-                        destinationNode);
-                path = new Path(generateSpeed());
-                for ( MapNode node : nodes ) {
-                    path.addWaypoint(node.getLocation());
-                }
-                lastWaypoint = nextLocation.clone();
-                mode = nextmode;
-                break;
-
-            case AT_OFFICE_MODE:
-                if ( startedWorkingTime == -1 ) {
-                    startedWorkingTime = SimClock.getIntTime();
-                }
-                // Check if it is time for lunch
-                if ( hadLunch == false && SimClock.getIntTime() >= this.lunchTime ) {
-                    nextLocation = cafePoint;
-                    mode = WALKING_TO_DEST_MODE;
-                    nextmode = AT_LUNCH_MODE;
-                }
-                // Check if work day is over
-                if ( SimClock.getIntTime() - startedWorkingTime >= workDayLength ) {
-                    mode = WALKING_TO_DEST_MODE;
-                    nextmode = AT_HOME_MODE;
-                    nextLocation = startPoint;
-                }
-                path = new Path(1);
-                path.addWaypoint(lastWaypoint.clone());
-                break;
-
-            case AT_LUNCH_MODE:
-                if ( startedLunchTime == -1) {
-                    startedLunchTime = SimClock.getIntTime();
-                }
-                // Check if lunch is over
-                if ( SimClock.getIntTime() - startedLunchTime >= lunchBreakLength ) {
-                    nextLocation = officeLocation;
-                    mode = WALKING_TO_DEST_MODE;
-                    nextmode = AT_OFFICE_MODE;
-                    hadLunch = true;
-                }
-                path = new Path(1);
-                path.addWaypoint(lastWaypoint.clone());
-                break;
-
-            case AT_HOME_MODE:
-                path = new Path(1);
-                path.addWaypoint(lastWaypoint.clone());
-                break;
-
-            default:
-                break;
+            } else {
+                // Go home - Total number of lectures reached
+                destinationNode = map.getNodeByCoord(startPoint);
+                mode = AT_HOME_MODE;
+            }
+            List<MapNode> nodes = pathFinder.getShortestPath(thisNode,
+                    destinationNode);
+            Path path = new Path(generateSpeed());
+            for (MapNode node : nodes) {
+                path.addWaypoint(node.getLocation());
+            }
+            lastWaypoint = destinationNode.getLocation();
+            return path;
+        } else if (mode == AT_LECTURE_MODE) {
+            if (startedLectureTime == -1) {
+                startedLectureTime = SimClock.getIntTime();
+            }
+            // Check if current lecture is over
+            if (SimClock.getIntTime() - startedLectureTime >= lectureLength) {
+                mode = WALKING_TO_DEST_MODE;
+                startedLectureTime = -1;
+            }
+            Path path = new Path(1);
+            path.addWaypoint(lastWaypoint.clone());
+            ready = true;
+            return path;
+        } else if (mode == AT_LUNCH_MODE) {
+            if (startedLunchTime == -1) {
+                startedLunchTime = SimClock.getIntTime();
+            }
+            // Check if lunch is over
+            if (SimClock.getIntTime() - startedLunchTime >= lunchBreakLength) {
+                mode = WALKING_TO_DEST_MODE;
+                hadLunch = true;
+            }
+            Path path = new Path(1);
+            path.addWaypoint(lastWaypoint.clone());
+            ready = true;
+            return path;
+        } else {
+            Path path = new Path(1);
+            path.addWaypoint(lastWaypoint.clone());
+            ready = true;
+            return path;
         }
-        return path;
     }
 
     @Override
     public MapBasedMovement replicate() {
-        return new StaffMovement(this);
+        return new StudMovement(this);
     }
 
     /**
@@ -299,9 +283,8 @@ public class StaffMovement extends MapBasedMovement implements
      */
     public void setLocation(Coord lastWaypoint) {
         this.lastWaypoint = lastWaypoint.clone();
-        startedWorkingTime = -1;
+        startedLectureTime = -1;
         ready = false;
-        mode = nextmode;
+        mode = WALKING_TO_DEST_MODE;
     }
-
 }

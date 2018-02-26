@@ -1,0 +1,15 @@
+ChairIntern	286
+LibraryStudent	60
+ChairLibrary	30
+FacilityManagementIntern	4
+CafeteriaIntern	8
+CafeteriaLibrary	5
+CafeteriaFacilityManagement	15
+ChairFacilityManagement	97
+LibraryIntern	1
+StudentIntern	670
+FacilityManagementStudent	173
+CafeteriaStudent	107
+CafeteriaChair	63
+ChairStudent	811
+FacilityManagementLibrary	15

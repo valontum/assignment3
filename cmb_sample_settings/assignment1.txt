@@ -5,13 +5,13 @@
 # Name to identify the present scenario
 Scenario.name = Assignment-1
 # How frequently to sample the simulation
-Scenario.updateInterval = 0.1
+Scenario.updateInterval = 20
 # How long the simulation will run (in seconds)
 # 43k ~= 12h -> 3600 ~= 1h
-# University day: 6am to 21pm ~= 57600
+# University day: 6am to 10pm ~= 57600
 Scenario.endTime = 57600
 
-Scenario.nrofHostGroups = 14
+Scenario.nrofHostGroups = 16
 
 ###############################
 ### Movement model settings ###
@@ -22,44 +22,44 @@ Scenario.nrofHostGroups = 14
 MovementModel.worldSize = 946,720
 
 ## Map based movement -movement model specific settings
-MapBasedMovement.nrofMapFiles = 30
+MapBasedMovement.nrofMapFiles = 27
 
 # MI-Building (Indoor)
-MapBasedMovement.mapFile1 = data/mi/01_Magistrale.wkt
-MapBasedMovement.mapFile2 = data/mi/02_HS1.wkt
-MapBasedMovement.mapFile3 = data/mi/03_Bibliothek.wkt
-MapBasedMovement.mapFile4 = data/mi/04_Sektor.wkt
-MapBasedMovement.mapFile5 = data/mi/05_Sektor.wkt
-MapBasedMovement.mapFile6 = data/mi/06_Sektor.wkt
-MapBasedMovement.mapFile7 = data/mi/07_Sektor.wkt
-MapBasedMovement.mapFile8 = data/mi/08_Sektor.wkt
-MapBasedMovement.mapFile9= data/mi/09_Sektor.wkt
-MapBasedMovement.mapFile10 = data/mi/10_Sektor.wkt
-MapBasedMovement.mapFile11 = data/mi/11_Sektor.wkt
-MapBasedMovement.mapFile12 = data/mi/12_Sektor.wkt
-MapBasedMovement.mapFile13 = data/mi/13_Sektor.wkt
-MapBasedMovement.mapFile14 = data/mi/HS2.wkt
-MapBasedMovement.mapFile15 = data/mi/HS3.wkt
-MapBasedMovement.mapFile16 = data/mi/RHalle.wkt
+MapBasedMovement.mapFile1 = data/infbuilding/Magistrale.wkt
+
+
+MapBasedMovement.mapFile2 = data/infbuilding/HS1.wkt
+
+MapBasedMovement.mapFile3 = data/infbuilding/Library.wkt
+MapBasedMovement.mapFile4 = data/infbuilding/Chair4.wkt
+MapBasedMovement.mapFile5 = data/infbuilding/Chair5.wkt
+MapBasedMovement.mapFile6 = data/infbuilding/Chair6.wkt
+MapBasedMovement.mapFile7 = data/infbuilding/Chair7.wkt
+MapBasedMovement.mapFile8 = data/infbuilding/Chair8.wkt
+MapBasedMovement.mapFile9 = data/infbuilding/Chair9.wkt
+MapBasedMovement.mapFile10 = data/infbuilding/Chair10.wkt
+MapBasedMovement.mapFile11 = data/infbuilding/Chair11.wkt
+MapBasedMovement.mapFile12 = data/infbuilding/Chair12.wkt
+MapBasedMovement.mapFile13 = data/infbuilding/Chair13.wkt
+
+MapBasedMovement.mapFile14 = data/infbuilding/HS2.wkt
+MapBasedMovement.mapFile15 = data/infbuilding/HS3.wkt
+MapBasedMovement.mapFile16 = data/infbuilding/ComputerHall.wkt
 
 # Main-Entrances
-MapBasedMovement.mapFile17 = data/mi/Nord-Eingang.wkt
-MapBasedMovement.mapFile18 = data/mi/Ost-Eingang.wkt
-MapBasedMovement.mapFile19 = data/mi/Sued-Eingang.wkt
-MapBasedMovement.mapFile20 = data/mi/West-Eingang.wkt
+MapBasedMovement.mapFile17 = data/infbuilding/EntryNorth.wkt
+MapBasedMovement.mapFile18 = data/infbuilding/EntryEast.wkt
+MapBasedMovement.mapFile19 = data/infbuilding/EntryWest.wkt
 
 # Connection Files
-MapBasedMovement.mapFile21 = data/mi/Verbindung_0102.wkt
-MapBasedMovement.mapFile22 = data/mi/Verbindung_0103.wkt
-MapBasedMovement.mapFile23 = data/mi/Verbindung_01HS2.wkt
-MapBasedMovement.mapFile24 = data/mi/Verbindung_01HS3.wkt
-MapBasedMovement.mapFile25 = data/mi/Verbindung_01RHalle.wkt
-MapBasedMovement.mapFile26 = data/mi/Verbindung_WestSued.wkt
-MapBasedMovement.mapFile27 = data/mi/Verbindung_SuedOst.wkt
-MapBasedMovement.mapFile28 = data/mi/Verbindung_WestNord.wkt
-
-MapBasedMovement.mapFile29 = data/mi/U-Bahn.wkt
-MapBasedMovement.mapFile30 = data/mi/Parkplatz.wkt
+MapBasedMovement.mapFile20 = data/infbuilding/c2.wkt
+MapBasedMovement.mapFile21 = data/infbuilding/c3.wkt
+MapBasedMovement.mapFile22 = data/infbuilding/PathHS2.wkt
+MapBasedMovement.mapFile23 = data/infbuilding/PathHS3.wkt
+MapBasedMovement.mapFile24 = data/infbuilding/PathComputerHall.wkt
+MapBasedMovement.mapFile25 = data/infbuilding/OutsidePathWay.wkt
+MapBasedMovement.mapFile26 = data/infbuilding/Station.wkt
+MapBasedMovement.mapFile27 = data/infbuilding/Parking.wkt
 
 
 ############
@@ -94,155 +94,174 @@ Group.speed = 0.5, 1.5
 # Group.msgTtl = 300
 # The starting points
 Group.nrOfStarts = 3
-Group.startLocationsFile = data/mi/POI/starts.wkt
+Group.startLocationsFile = data/infbuilding/POI/starts.wkt
 Group.cafeteriaPoint = 445,433
 
-## Group 1 - Students_1
+## Group 1 - Students 1
 Group1.groupID = S1.
-Group1.nrofHosts = 20
-Group1.movementModel = UniMovement
+Group1.nrofHosts = 10
+Group1.movementModel = StudMovement
 Group1.activeTimes = 7200, 57600
 Group1.lunchTime = 18000
 Group1.nrOfRooms = 7
-Group1.roomLocationsFile = data/mi/POI/students_schedule1.wkt
-Group1.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+Group1.roomLocationsFile = data/infbuilding/POI/s1.wkt
+Group1.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 
-## Group 2 - Students_2
+## Group 2 - Students 2
 Group2.groupID = S2.
 Group2.nrofHosts = 20
-Group2.movementModel = UniMovement
+Group2.movementModel = StudMovement
 Group2.activeTimes = 14400, 57600
 Group2.lunchTime = 21600
 Group2.nrOfRooms = 7
-Group2.roomLocationsFile = data/mi/POI/students_schedule2.wkt
-Group2.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+Group2.roomLocationsFile = data/infbuilding/POI/s2.wkt
+Group2.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 
-## Group 2 - Students_3
+## Group 3 - Students 3
 Group3.groupID = S3.
-Group3.nrofHosts = 20
-Group3.movementModel = UniMovement
+Group3.nrofHosts = 30
+Group3.movementModel = StudMovement
 Group3.activeTimes = 21600, 57600
 Group3.lunchTime = 21600
 Group3.nrOfRooms = 5
-Group3.roomLocationsFile = data/mi/POI/students_schedule3.wkt
-Group3.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+Group3.roomLocationsFile = data/infbuilding/POI/s3.wkt
+Group3.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 
-## Group 4 - Library Staff
-Group4.groupID = L
-Group4.nrofHosts = 2
-Group4.movementModel = StaffMovement
-Group4.activeTimes = 7200, 57600
+## Group 4 - Students 4
+Group4.groupID = S4.
+Group4.nrofHosts = 25
+Group4.movementModel = StudMovement
+Group4.activeTimes = 10600, 26600
 Group4.lunchTime = 21600
-Group4.workDayLength = 32400
-Group4.nrOfOffices = 1
-Group4.officeLocationsFile = data/mi/POI/library_office.wkt
-Group4.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+Group4.nrOfRooms = 5
+Group4.roomLocationsFile = data/infbuilding/POI/s3.wkt
+Group4.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 
-## Group 5 - Cafeteria Staff
-Group5.groupID = Caf
-Group5.nrofHosts = 4
+## Group 5 - Library Staff
+Group5.groupID = L
+Group5.nrofHosts = 2
 Group5.movementModel = StaffMovement
 Group5.activeTimes = 7200, 57600
-Group5.lunchTime = 25200
+Group5.lunchTime = 21600
 Group5.workDayLength = 32400
 Group5.nrOfOffices = 1
-Group5.officeLocationsFile = data/mi/POI/cafeteria.wkt
-Group5.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+Group5.officeLocationsFile = data/infbuilding/POI/library.wkt
+Group5.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 
-## Group 6 - Chair employees Sektion 6
-Group6.groupID = C6.
-Group6.nrofHosts = 6
+## Group 6 - Cafeteria Staff
+Group6.groupID = Caf
+Group6.nrofHosts = 4
 Group6.movementModel = StaffMovement
 Group6.activeTimes = 7200, 57600
-Group6.lunchTime = 18000
+Group6.lunchTime = 25200
 Group6.workDayLength = 32400
-Group6.nrOfOffices = 3
-Group6.officeLocationsFile = data/mi/POI/offices_sektor6.wkt
-Group6.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+Group6.nrOfOffices = 1
+Group6.officeLocationsFile = data/infbuilding/POI/cafeteria.wkt
+Group6.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 
-## Group 7 - Chair employees Sektion 7
-Group7.groupID = C7.
+## Group 7 - Chair employees 6
+Group7.groupID = C6.
 Group7.nrofHosts = 6
 Group7.movementModel = StaffMovement
-Group7.activeTimes = 10800, 57600
-Group7.lunchTime = 25200
-Group7.workDayLength = 28800
-Group7.nrOfOffices = 4
-Group7.officeLocationsFile = data/mi/POI/offices_sektor7.wkt
-Group7.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+Group7.activeTimes = 7200, 57600
+Group7.lunchTime = 18000
+Group7.workDayLength = 32400
+Group7.nrOfOffices = 3
+Group7.officeLocationsFile = data/infbuilding/POI/officesChair6.wkt
+Group7.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 
-# Group 8 - Chair employees Sektion 4
-Group8.groupID = C4.
-Group8.nrofHosts = 2
+## Group 8 - Chair employees 7
+Group8.groupID = C7.
+Group8.nrofHosts = 6
 Group8.movementModel = StaffMovement
 Group8.activeTimes = 10800, 57600
 Group8.lunchTime = 25200
-Group8.workDayLength = 32400
-Group8.nrOfOffices = 1
-Group8.officeLocationsFile = data/mi/POI/offices_sektor4.wkt
-Group8.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+Group8.workDayLength = 28800
+Group8.nrOfOffices = 4
+Group8.officeLocationsFile = data/infbuilding/POI/officesChair7.wkt
+Group8.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 
-# Group 9 - Chair employees Sektion 9
-Group9.groupID = C9.
-Group9.nrofHosts = 3
+# Group 9 - Chair employees 4
+Group9.groupID = C4.
+Group9.nrofHosts = 2
 Group9.movementModel = StaffMovement
-Group9.activeTimes = 3600, 57600
-Group9.lunchTime = 18000
-Group9.workDayLength = 28800
-Group9.nrOfOffices = 4
-Group9.officeLocationsFile = data/mi/POI/offices_sektor9.wkt
-Group9.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+Group9.activeTimes = 10800, 57600
+Group9.lunchTime = 25200
+Group9.workDayLength = 32400
+Group9.nrOfOffices = 1
+Group9.officeLocationsFile = data/infbuilding/POI/officesChair4.wkt
+Group9.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 
-# Group 10 - Chair employees Sektion 10
-Group10.groupID = C10.
-Group10.nrofHosts = 4
+# Group 10 - Chair employees 9
+Group10.groupID = C9.
+Group10.nrofHosts = 3
 Group10.movementModel = StaffMovement
-Group10.activeTimes = 10800, 57600
-Group10.lunchTime = 25200
-Group10.workDayLength = 32400
-Group10.nrOfOffices = 2
-Group10.officeLocationsFile = data/mi/POI/offices_sektor10.wkt
-Group10.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+Group10.activeTimes = 3600, 57600
+Group10.lunchTime = 18000
+Group10.workDayLength = 28800
+Group10.nrOfOffices = 4
+Group10.officeLocationsFile = data/infbuilding/POI/officesChair9.wkt
+Group10.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 
-# Group 11 - Chair employees Sektion 11
-Group11.groupID = C11.
-Group11.nrofHosts = 5
+# Group 11 - Chair employees 10
+Group11.groupID = C10.
+Group11.nrofHosts = 4
 Group11.movementModel = StaffMovement
-Group11.activeTimes = 3600, 57600
-Group11.lunchTime = 21600
-Group11.workDayLength = 28800
-Group11.nrOfOffices = 4
-Group11.officeLocationsFile = data/mi/POI/offices_sektor11.wkt
-Group11.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+Group11.activeTimes = 10800, 57600
+Group11.lunchTime = 25200
+Group11.workDayLength = 32400
+Group11.nrOfOffices = 2
+Group11.officeLocationsFile = data/infbuilding/POI/officesChair10.wkt
+Group11.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 
-# Group 12 - Chair employees Sektion 12
-Group12.groupID = C12.
-Group12.nrofHosts = 2
+# Group 12 - Chair employees 11
+Group12.groupID = C11.
+Group12.nrofHosts = 5
 Group12.movementModel = StaffMovement
-Group12.activeTimes = 10800, 57600
+Group12.activeTimes = 3600, 57600
 Group12.lunchTime = 21600
-Group12.workDayLength = 32400
-Group12.nrOfOffices = 3
-Group12.officeLocationsFile = data/mi/POI/offices_sektor12.wkt
-Group12.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+Group12.workDayLength = 28800
+Group12.nrOfOffices = 4
+Group12.officeLocationsFile = data/infbuilding/POI/officesChair11.wkt
+Group12.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 
-# Group 13 - Chair employees Sektion 5
-Group13.groupID = C5.
-Group13.nrofHosts = 7
+# Group 13 - Chair employees 12
+Group13.groupID = C12.
+Group13.nrofHosts = 2
 Group13.movementModel = StaffMovement
-Group13.activeTimes = 3600, 57600
+Group13.activeTimes = 10800, 57600
 Group13.lunchTime = 21600
 Group13.workDayLength = 32400
-Group13.nrOfOffices = 4
-Group13.officeLocationsFile = data/mi/POI/offices_sektor5.wkt
-Group13.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+Group13.nrOfOffices = 3
+Group13.officeLocationsFile = data/infbuilding/POI/officesChair12.wkt
+Group13.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 
-## Group 14 - Facility Management
-Group14.groupID = FM
-Group14.nrofHosts = 2
-Group14.movementModel = FMMovement
-Group14.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
-Group14.activeTimes = 0, 21600, 28800, 57600
+# Group 14 - Chair employees 5
+Group14.groupID = C5.
+Group14.nrofHosts = 7
+Group14.movementModel = StaffMovement
+Group14.activeTimes = 3600, 57600
+Group14.lunchTime = 21600
+Group14.workDayLength = 32400
+Group14.nrOfOffices = 4
+Group14.officeLocationsFile = data/infbuilding/POI/officesChair5.wkt
+Group14.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
+
+## Group 15 - Security
+Group15.groupID = SC
+Group15.nrofHosts = 2
+Group15.movementModel = SMovement
+Group15.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
+Group15.activeTimes = 0, 21600
+
+## Group 16 - Security
+Group16.groupID = SC
+Group16.nrofHosts = 2
+Group16.movementModel = SMovement
+Group16.okMaps = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
+Group16.activeTimes = 21600, 57600
+
+
 
 #############
 ## Reports ##
@@ -250,15 +269,14 @@ Group14.activeTimes = 0, 21600, 28800, 57600
 # How many reports to load
 Report.nrofReports = 1
 # Directory where reports would be created
-Report.reportDir = reports/Assignment-1
+Report.reportDir = reports
 # Report classes to load
-Report.report1 = InterGroupContactsReport
-
+Report.report1 = InterGroupContacts
 ##################
 ## GUI settings ##
 
 # GUI underlay image settings
-GUI.UnderlayImage.fileName = data/mi/MI_Map.jpg
+GUI.UnderlayImage.fileName = data/infbuilding/map.jpg
 # Image offset in pixels (x, y)
 GUI.UnderlayImage.offset = 0, 0
 # Scaling factor for the image
